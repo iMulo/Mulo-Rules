@@ -1,10 +1,5 @@
-// ===== 修正版 macOS系统更新屏蔽规则 =====
-[general]
 dns-server = 119.29.29.29, 223.5.5.5
 dns-exclusion = *.apple.com
-
-[filter_local]
-// 基础屏蔽域名
 host-keyword, swscan, reject
 host-suffix, apple.com.edgekey.net, reject
 host, gdmf.apple.com, reject
@@ -13,16 +8,10 @@ host, xp.apple.com, reject
 host, swdownload.apple.com, reject
 host, oscdn.apple.com, reject
 host, appldnld.apple.com, reject
-
-// 修正 sucatalog 规则 (使用 host 匹配)
 host, swscan.apple.com, reject
 host, swdist.apple.com, reject
-
-// 增加 macOS 13+ 专用屏蔽
 host, swcdn.apple.com, reject
 host, swdownload.apple.com.akadns.net, reject
 host, ocsp-lb.apple.com.akadns.net, reject
-
-// 增强型匹配规则
 ip-cidr, 17.0.0.0/8, reject
 ip-cidr, 104.86.0.0/16, reject
