@@ -1,17 +1,6 @@
-dns-server = 119.29.29.29, 223.5.5.5
-dns-exclusion = *.apple.com
-host-keyword, swscan, reject
-host-suffix, apple.com.edgekey.net, reject
-host, gdmf.apple.com, reject
-host, mesu.apple.com, reject
-host, xp.apple.com, reject
-host, swdownload.apple.com, reject
-host, oscdn.apple.com, reject
-host, appldnld.apple.com, reject
-host, swscan.apple.com, reject
-host, swdist.apple.com, reject
-host, swcdn.apple.com, reject
-host, swdownload.apple.com.akadns.net, reject
-host, ocsp-lb.apple.com.akadns.net, reject
-ip-cidr, 17.0.0.0/8, reject
-ip-cidr, 104.86.0.0/16, reject
+DOMAIN,swscan.apple.com,REJECT
+DOMAIN,swdownload.apple.com,REJECT
+DOMAIN,swcdn.apple.com,REJECT
+DOMAIN,swdist.apple.com,REJECT
+DOMAIN,mesu.apple.com,REJECT
+
