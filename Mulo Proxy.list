@@ -1,0 +1,8 @@
+# Quantumult X 分流规则
+# 创建日期：2026-01-16
+# 更新日期：2026-02-23
+
+# 常用国外服务
+HOST-SUFFIX,missav.ai
+HOST-SUFFIX,jable.tv
+HOST-SUFFIX,hanime1.me
