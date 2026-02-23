@@ -3,6 +3,6 @@
 # 更新日期：2026-02-23
 
 # 国外视频网站
-HOST-SUFFIX,missav.ai
-HOST-SUFFIX,jable.tv
-HOST-SUFFIX,hanime1.me
+DOMAIN-SUFFIX,missav.ai
+DOMAIN-SUFFIX,jable.tv
+DOMAIN-SUFFIX,hanime1.me
