@@ -108,8 +108,8 @@ rules:
 - DOMAIN-KEYWORD,bilibili,DIRECT
 
 # ---- OpenAI 强制走日本专线 ----
-- DOMAIN-SUFFIX,openai.com,🤖ChatGPT
-- DOMAIN-SUFFIX,chatgpt.com,🤖ChatGPT
+- DOMAIN-SUFFIX,openai.com,ChatGPT
+- DOMAIN-SUFFIX,chatgpt.com,ChatGPT
 
 # ---- 其他全部走默认 ----
 - MATCH,🌐默认代理
