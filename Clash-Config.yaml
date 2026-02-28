@@ -97,9 +97,19 @@ proxy-groups:
 
 rules:
 
-# ChatGPT 强制走专线
-- DOMAIN-SUFFIX,openai.com,ChatGPT
-- DOMAIN-SUFFIX,chatgpt.com,ChatGPT
+# ---- 中国直连 ----
+- GEOIP,CN,DIRECT
 
-# 其他默认
-- MATCH,常规国家
+# ---- 常见国内域名直连 ----
+- DOMAIN-SUFFIX,cn,DIRECT
+- DOMAIN-KEYWORD,baidu,DIRECT
+- DOMAIN-KEYWORD,qq,DIRECT
+- DOMAIN-KEYWORD,taobao,DIRECT
+- DOMAIN-KEYWORD,bilibili,DIRECT
+
+# ---- OpenAI 强制走日本专线 ----
+- DOMAIN-SUFFIX,openai.com,🤖ChatGPT
+- DOMAIN-SUFFIX,chatgpt.com,🤖ChatGPT
+
+# ---- 其他全部走默认 ----
+- MATCH,🌐默认代理
