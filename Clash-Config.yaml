@@ -5,6 +5,7 @@ log-level: info
 external-controller: 127.0.0.1:9090
 
 proxy-providers:
+
   袋鼠加速:
     type: http
     url: "https://microsoft-update-daily.com/api/v1/client/subscribe?token=f76fef66268311f2b9b6b1f5c0b103ad"
@@ -15,101 +16,157 @@ proxy-providers:
       interval: 300
       url: https://www.gstatic.com/generate_204
 
+  赔钱机场:
+    type: http
+    url: "https://dash.pqjc.site/api/v1/pq/0ff5fa71194fb2d8fffba6dcb46e2d60"
+    interval: 3600
+    path: ./providers/pqjc.yaml
+    health-check:
+      enable: true
+      interval: 300
+      url: https://www.gstatic.com/generate_204
+
+
 proxy-groups:
 
-# ===== 自动测速国家组 =====
+# ================= 订阅独立手动组 =================
 
-- name: 香港
+- name: 袋鼠加速手动
+  type: select
+  use: [袋鼠加速]
+  filter: "^(?!.*(0\\.1|0\\.01|下载|流量|订阅|daishu|删除|更新|到期|剩余|永久|佣金|请勿)).*"
+
+- name: 赔钱机场手动
+  type: select
+  use: [赔钱机场]
+  filter: "^(?!.*(0\\.1|0\\.01|下载|流量|订阅|删除|更新|到期|剩余|永久|佣金|请勿)).*"
+
+
+# ================= 自动测速组 =================
+
+- name: 香港测速优先
   type: url-test
-  use:
-    - 袋鼠加速
-  filter: "香港"
+  use: [袋鼠加速, 赔钱机场]
+  filter: "(香港|HK)"
+  exclude-filter: "(0\\.1|0\\.01|下载)"
   url: https://www.gstatic.com/generate_204
   interval: 300
 
-- name: 日本
+- name: 韩国测速优先
   type: url-test
-  use:
-    - 袋鼠加速
-  filter: "日本"
+  use: [袋鼠加速, 赔钱机场]
+  filter: "(韩国|KR|首尔)"
+  exclude-filter: "(0\\.1|0\\.01|下载)"
   url: https://www.gstatic.com/generate_204
   interval: 300
 
-- name: 新加坡
+- name: 美国测速优先
   type: url-test
-  use:
-    - 袋鼠加速
-  filter: "新加坡"
+  use: [袋鼠加速, 赔钱机场]
+  filter: "(美国|US|United States)"
+  exclude-filter: "(0\\.1|0\\.01|下载)"
   url: https://www.gstatic.com/generate_204
   interval: 300
 
-- name: 美国
+- name: 狮城测速优先
   type: url-test
-  use:
-    - 袋鼠加速
-  filter: "美国"
+  use: [袋鼠加速, 赔钱机场]
+  filter: "(新加坡|SG|狮城)"
+  exclude-filter: "(0\\.1|0\\.01|下载)"
+  url: https://www.gstatic.com/generate_204
+  interval: 300
+
+- name: 日本测速优先
+  type: url-test
+  use: [袋鼠加速, 赔钱机场]
+  filter: "(日本|JP|Tokyo|大阪)"
+  exclude-filter: "(0\\.1|0\\.01|下载)"
+  url: https://www.gstatic.com/generate_204
+  interval: 300
+
+- name: 台湾测速优先
+  type: url-test
+  use: [袋鼠加速, 赔钱机场]
+  filter: "(台湾|TW|Taiwan|台北)"
+  exclude-filter: "(0\\.1|0\\.01|下载)"
   url: https://www.gstatic.com/generate_204
   interval: 300
 
 
-# ===== 其他国家自动分类 =====
+# ================= 全局手动选择 =================
 
-- name: 其他国家
-  type: url-test
-  use:
-    - 袋鼠加速
-  filter: "英国|印度|越南|澳大利亚|印度尼西亚|俄罗斯|乌克兰|迪拜|德国|法国|荷兰|瑞士|西班牙"
-  url: https://www.gstatic.com/generate_204
-  interval: 300
+- name: 全局手动选择
+  type: select
+  use: [袋鼠加速, 赔钱机场]
+  filter: "^(?!.*(0\\.1|0\\.01|下载|流量|订阅|删除|更新|到期|daishu|剩余|永久|佣金|请勿)).*"
 
 
-# ===== ChatGPT 专用组（自动选日本 ChatGPT 专线）=====
+# ================= ChatGPT 专线 =================
 
 - name: ChatGPT
   type: url-test
-  use:
-    - 袋鼠加速
-  filter: "日本.*ChatGPT"
+  use: [袋鼠加速, 赔钱机场]
+  filter: "(日本|JP).*ChatGPT"
+  exclude-filter: "(0\\.1|0\\.01|下载)"
   url: https://chat.openai.com
   interval: 300
 
 
-# ===== 手动组（真正可点选）=====
+# ================= AI 专用总控 =================
 
-- name: 手动全部节点
-  type: select
-  use:
-    - 袋鼠加速
-
-
-# ===== 总控组 =====
-
-- name: 常规国家
+- name: AI总控
   type: select
   proxies:
-    - 香港
-    - 日本
-    - 新加坡
-    - 美国
-    - 其他国家
-    - 手动全部节点
-    - DIRECT
+    - ChatGPT
+    - 香港测速优先
+    - 韩国测速优先
+    - 美国测速优先
+    - 狮城测速优先
+    - 日本测速优先
+    - 台湾测速优先
+    - 袋鼠加速手动
+    - 赔钱机场手动
+    - 全局手动选择
+
+
+# ================= 普通流量总控 =================
+
+- name: 节点总控
+  type: select
+  proxies:
+    - 香港测速优先
+    - 韩国测速优先
+    - 美国测速优先
+    - 狮城测速优先
+    - 日本测速优先
+    - 台湾测速优先
+    - 袋鼠加速手动
+    - 赔钱机场手动
+    - 全局手动选择
+
 
 rules:
 
-# ---- 中国直连 ----
+# 国内直连
 - GEOIP,CN,DIRECT
-
-# ---- 常见国内域名直连 ----
 - DOMAIN-SUFFIX,cn,DIRECT
 - DOMAIN-KEYWORD,baidu,DIRECT
 - DOMAIN-KEYWORD,qq,DIRECT
 - DOMAIN-KEYWORD,taobao,DIRECT
 - DOMAIN-KEYWORD,bilibili,DIRECT
 
-# ---- OpenAI 强制走日本专线 ----
-- DOMAIN-SUFFIX,openai.com,ChatGPT
-- DOMAIN-SUFFIX,chatgpt.com,ChatGPT
+# AI 全走 AI总控
+- DOMAIN-SUFFIX,openai.com,AI总控
+- DOMAIN-SUFFIX,chatgpt.com,AI总控
+- DOMAIN-SUFFIX,claude.ai,AI总控
+- DOMAIN-SUFFIX,anthropic.com,AI总控
+- DOMAIN-SUFFIX,x.ai,AI总控
+- DOMAIN-SUFFIX,grok.com,AI总控
+- DOMAIN-SUFFIX,gemini.google.com,AI总控
+- DOMAIN-KEYWORD,chatgpt,AI总控
+- DOMAIN-KEYWORD,gemini,AI总控
+- DOMAIN-KEYWORD,claude,AI总控
+- DOMAIN-KEYWORD,grok,AI总控
 
-# ---- 其他全部走默认 ----
-- MATCH,🌐默认代理
+# 其他全部
+- MATCH,节点总控
