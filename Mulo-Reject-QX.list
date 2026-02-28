@@ -1,5 +1,6 @@
-HOST-SUFFIX,swscan.apple.com,REJECT
-HOST-SUFFIX,swdownload.apple.com,REJECT
-HOST-SUFFIX,swcdn.apple.com,REJECT
-HOST-SUFFIX,swdist.apple.com,REJECT
-HOST-SUFFIX,mesu.apple.com,REJECT
+# [filter_local]
+host-suffix,swscan.apple.com,reject
+host-suffix,swdownload.apple.com,reject
+host-suffix,swcdn.apple.com,reject
+host-suffix,swdist.apple.com,reject
+host-suffix,mesu.apple.com,reject
