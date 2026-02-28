@@ -1,0 +1,105 @@
+mixed-port: 7897
+allow-lan: true
+mode: rule
+log-level: info
+external-controller: 127.0.0.1:9090
+
+proxy-providers:
+  袋鼠加速:
+    type: http
+    url: "https://microsoft-update-daily.com/api/v1/client/subscribe?token=f76fef66268311f2b9b6b1f5c0b103ad"
+    interval: 3600
+    path: ./providers/ds.yaml
+    health-check:
+      enable: true
+      interval: 300
+      url: https://www.gstatic.com/generate_204
+
+proxy-groups:
+
+# ===== 自动测速国家组 =====
+
+- name: 香港
+  type: url-test
+  use:
+    - 袋鼠加速
+  filter: "香港"
+  url: https://www.gstatic.com/generate_204
+  interval: 300
+
+- name: 日本
+  type: url-test
+  use:
+    - 袋鼠加速
+  filter: "日本"
+  url: https://www.gstatic.com/generate_204
+  interval: 300
+
+- name: 新加坡
+  type: url-test
+  use:
+    - 袋鼠加速
+  filter: "新加坡"
+  url: https://www.gstatic.com/generate_204
+  interval: 300
+
+- name: 美国
+  type: url-test
+  use:
+    - 袋鼠加速
+  filter: "美国"
+  url: https://www.gstatic.com/generate_204
+  interval: 300
+
+
+# ===== 其他国家自动分类 =====
+
+- name: 其他国家
+  type: url-test
+  use:
+    - 袋鼠加速
+  filter: "英国|印度|越南|澳大利亚|印度尼西亚|俄罗斯|乌克兰|迪拜|德国|法国|荷兰|瑞士|西班牙"
+  url: https://www.gstatic.com/generate_204
+  interval: 300
+
+
+# ===== ChatGPT 专用组（自动选日本 ChatGPT 专线）=====
+
+- name: ChatGPT
+  type: url-test
+  use:
+    - 袋鼠加速
+  filter: "日本.*ChatGPT"
+  url: https://chat.openai.com
+  interval: 300
+
+
+# ===== 手动组（真正可点选）=====
+
+- name: 手动全部节点
+  type: select
+  use:
+    - 袋鼠加速
+
+
+# ===== 总控组 =====
+
+- name: 常规国家
+  type: select
+  proxies:
+    - 香港
+    - 日本
+    - 新加坡
+    - 美国
+    - 其他国家
+    - 手动全部节点
+    - DIRECT
+
+rules:
+
+# ChatGPT 强制走专线
+- DOMAIN-SUFFIX,openai.com,ChatGPT
+- DOMAIN-SUFFIX,chatgpt.com,ChatGPT
+
+# 其他默认
+- MATCH,常规国家
