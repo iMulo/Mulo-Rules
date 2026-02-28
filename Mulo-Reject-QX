@@ -1,0 +1,5 @@
+HOST-SUFFIX,swscan.apple.com,REJECT
+HOST-SUFFIX,swdownload.apple.com,REJECT
+HOST-SUFFIX,swcdn.apple.com,REJECT
+HOST-SUFFIX,swdist.apple.com,REJECT
+HOST-SUFFIX,mesu.apple.com,REJECT
