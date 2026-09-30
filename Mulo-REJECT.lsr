@@ -1,6 +1,2 @@
-# 屏蔽苹果更新
-DOMAIN,swscan.apple.com
-DOMAIN,swdownload.apple.com
-DOMAIN,swcdn.apple.com
-DOMAIN,swdist.apple.com
-DOMAIN,mesu.apple.com
+# 屏蔽115广告
+DOMAIN-SUFFIX,act.115.com,
